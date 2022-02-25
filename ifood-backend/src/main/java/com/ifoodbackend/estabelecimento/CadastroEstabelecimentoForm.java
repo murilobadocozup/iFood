@@ -1,5 +1,6 @@
 package com.ifoodbackend.estabelecimento;
 
+import com.ifoodbackend.validadores.ValorUnico;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import javax.validation.constraints.Email;
@@ -19,6 +20,7 @@ public class CadastroEstabelecimentoForm {
 
     @NotBlank
     @Email
+    @ValorUnico(domainClass = Estabelecimento.class, fieldName = "email")
     private String email;
 
     @NotBlank
