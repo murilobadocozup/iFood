@@ -1,6 +1,7 @@
 package com.ifoodbackend.cliente;
 
-import com.ifoodbackend.validadores.ValorUnico;
+import com.ifoodbackend.endereco.CadastroEnderecoForm;
+import com.ifoodbackend.endereco.Endereco;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
@@ -8,6 +9,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Cliente {
@@ -34,9 +38,8 @@ public class Cliente {
     @Column(nullable = false)
     private String email;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String endereco;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.PERSIST)
+    private Set<Endereco> enderecos = new HashSet<>();
 
     @NotBlank
     @Column(nullable = false)
@@ -45,13 +48,13 @@ public class Cliente {
     public Cliente(@NotBlank @CPF String cpf,
                    @NotBlank String telefone,
                    @NotBlank @Email String email,
-                   @NotBlank String endereco,
                    @NotNull LocalDate dataNascimento,
+                   Set<CadastroEnderecoForm> enderecos,
                    @NotBlank String imagem) {
         this.cpf = cpf;
         this.telefone = telefone;
         this.email = email;
-        this.endereco = endereco;
+        this.enderecos = enderecos.stream().map(endereco -> endereco.converter(this)).collect(Collectors.toSet());
         this.dataNascimento = dataNascimento;
         this.imagem = imagem;
     }
