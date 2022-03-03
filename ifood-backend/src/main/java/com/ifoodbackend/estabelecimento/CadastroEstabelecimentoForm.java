@@ -1,13 +1,17 @@
 package com.ifoodbackend.estabelecimento;
 
+import com.ifoodbackend.item.CadastroItemForm;
 import com.ifoodbackend.validadores.ValorUnico;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CadastroEstabelecimentoForm {
 
@@ -38,6 +42,9 @@ public class CadastroEstabelecimentoForm {
     @NotBlank
     private String imagem;
 
+    @Valid
+    private Set<CadastroItemForm> itens = new HashSet<>();
+
     public CadastroEstabelecimentoForm(@NotBlank @CNPJ String cnpj,
                                        @NotBlank String telefone,
                                        @NotBlank @Email String email,
@@ -45,7 +52,8 @@ public class CadastroEstabelecimentoForm {
                                        @NotNull LocalTime horaAbertura,
                                        @NotNull LocalTime horaFechamento,
                                        @NotNull BigDecimal taxaDeEntrega,
-                                       @NotBlank String imagem) {
+                                       @NotBlank String imagem,
+                                       @Valid Set<CadastroItemForm> itens) {
         this.cnpj = cnpj;
         this.telefone = telefone;
         this.email = email;
@@ -54,10 +62,11 @@ public class CadastroEstabelecimentoForm {
         this.horaFechamento = horaFechamento;
         this.taxaDeEntrega = taxaDeEntrega;
         this.imagem = imagem;
+        this.itens.addAll(itens);
     }
 
     public Estabelecimento converter() {
         return new Estabelecimento(cnpj,telefone,email,endereco,
-                horaAbertura, horaFechamento,taxaDeEntrega,imagem);
+                horaAbertura, horaFechamento,taxaDeEntrega,imagem,itens);
     }
 }
