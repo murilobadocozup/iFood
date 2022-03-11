@@ -81,4 +81,32 @@ public class Estabelecimento {
     public Estabelecimento() {
 
     }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public void setHoraAbertura(LocalTime horaAbertura) {
+        this.horaAbertura = horaAbertura;
+    }
+
+    public void setHoraFechamento(LocalTime horaFechamento) {
+        this.horaFechamento = horaFechamento;
+    }
+
+    public void setTaxaDeEntrega(BigDecimal taxaDeEntrega) {
+        this.taxaDeEntrega = taxaDeEntrega;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
 }
