@@ -6,6 +6,7 @@ import com.ifoodbackend.estabelecimento.Estabelecimento;
 import com.ifoodbackend.estabelecimento.EstabelecimentoRepository;
 import com.ifoodbackend.item.Item;
 import com.ifoodbackend.item.ItemRepository;
+import com.ifoodbackend.validadores.Existe;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,14 +14,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public class CadastroPedidoForm {
 
     @NotNull
+    @Existe(domainClass = Estabelecimento.class, fieldName = "id")
     private Long estabelecimentoId;
 
     @NotNull
+    @Existe(domainClass = Cliente.class, fieldName = "id")
     private Long clienteId;
 
     @NotBlank
