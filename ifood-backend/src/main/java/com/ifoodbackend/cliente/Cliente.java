@@ -62,4 +62,24 @@ public class Cliente {
     public Cliente() {
 
     }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public void setEnderecos(Set<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public void setImagem(String imagem) {
+        this.imagem = imagem;
+    }
 }
