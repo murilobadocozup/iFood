@@ -1,7 +1,8 @@
 package com.ifoodbackend.estabelecimento;
 
-import com.ifoodbackend.cliente.Cliente;
-import com.ifoodbackend.cliente.EdicaoClienteForm;
+import com.ifoodbackend.item.EdicaoItemForm;
+import com.ifoodbackend.item.Item;
+import com.ifoodbackend.item.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ public class EstabelecimentoController {
 
     @Autowired
     private EstabelecimentoRepository estabelecimentoRepository;
+
+    @Autowired
+    private ItemRepository itemRepository;
 
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroEstabelecimentoForm estabelecimentoForm) {
@@ -42,6 +46,31 @@ public class EstabelecimentoController {
         estabelecimento.setImagem(estabelecimentoForm.getImagem());
 
         estabelecimentoRepository.save(estabelecimento);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{idEstabelecimento}/itens/{idItem}")
+    public ResponseEntity<?> atualizarItem(@PathVariable Long idEstabelecimento, @PathVariable Long idItem, @RequestBody @Valid EdicaoItemForm itemForm) {
+        Optional<Estabelecimento> buscaEstabelecimento = estabelecimentoRepository.findById(idEstabelecimento);
+        Optional<Item> buscaItem = itemRepository.findById(idItem);
+
+        if (!buscaEstabelecimento.isPresent() || !buscaItem.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+        }
+
+        if (buscaItem.get().getEstabelecimento() != buscaEstabelecimento.get()) {
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body("");
+        }
+
+        Item item = buscaItem.get();
+        item.setNome(itemForm.getNome());
+        item.setDescricao(itemForm.getDescricao());
+        item.setAtivo(itemForm.getAtivo());
+        item.setPreco(itemForm.getPreco());
+        item.setImagem(itemForm.getImagem());
+
+        itemRepository.save(item);
 
         return ResponseEntity.ok().build();
     }
