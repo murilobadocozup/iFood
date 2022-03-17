@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,6 +21,15 @@ public class ClienteController {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @GetMapping
+    public ResponseEntity<List<ListaClienteDto>> listar() {
+        List<Cliente> lista = clienteRepository.findAll();
+
+        List<ListaClienteDto> listaDto = ListaClienteDto.converter(lista);
+
+        return ResponseEntity.ok(listaDto);
+    }
 
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody @Valid CadastroClienteForm clienteForm) {
